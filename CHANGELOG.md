@@ -1,3 +1,6 @@
+### next [????.??.??]
+* Define `Quote` instances for `ReaderT`, `StateT`, `WriterT`, and `RWST`.
+
 ### 0.13.10 [2020.04.13]
 * Implement `liftTyped` in the `Lift Bytes` instance.
 

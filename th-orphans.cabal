@@ -38,6 +38,9 @@ library
                       th-lift-instances,
                       mtl
 
+  if !impl(ghc >= 8.11)
+    build-depends:    th-compat == 0.1.*
+
   if !impl(ghc >= 8.0)
     build-depends:    fail == 4.9.*
 

@@ -1,1 +1,6 @@
 packages: .
+
+source-repository-package
+  type: git
+  location: https://github.com/haskell-compat/th-quote
+  tag: ce2968f3b3c5c665576656b083265a21545786fe

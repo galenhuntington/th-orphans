@@ -62,6 +62,9 @@ import Language.Haskell.TH.Instances.Internal
 import Language.Haskell.TH.Lift (deriveLiftMany)
 import Language.Haskell.TH.ReifyMany
 import Language.Haskell.TH.Syntax
+#if !(MIN_VERSION_template_haskell(2,17,0))
+import Language.Haskell.TH.Syntax.Compat (Quote)
+#endif
 
 import Control.Monad.Reader (ReaderT(ReaderT), runReaderT)
 import Control.Monad.RWS (RWST(RWST), runRWST)
@@ -389,18 +392,26 @@ deriving instance Bounded Extension
 $(deriveQuasiTrans
     [t| forall r m. Quasi m => Proxy2 (ReaderT r m) |]
     [e| \m1 m2 -> ReaderT $ \ r -> runReaderT m1 r `qRecover` runReaderT m2 r |])
+$(deriveQuoteTrans
+    [t| forall r m. Quote m => Proxy2 (ReaderT r m) |])
 
 $(deriveQuasiTrans
     [t| forall w m. (Quasi m, Monoid w) => Proxy2 (WriterT w m) |]
     [e| \m1 m2 -> WriterT $ runWriterT m1 `qRecover` runWriterT m2 |])
+$(deriveQuoteTrans
+    [t| forall w m. (Quote m, Monoid w) => Proxy2 (WriterT w m) |])
 
 $(deriveQuasiTrans
     [t| forall s m. Quasi m => Proxy2 (StateT s m) |]
     [e| \m1 m2 -> StateT $ \ s -> runStateT m1 s `qRecover` runStateT m2 s |])
+$(deriveQuoteTrans
+    [t| forall s m. Quote m => Proxy2 (StateT s m) |])
 
 $(deriveQuasiTrans
     [t| forall r w s m. (Quasi m, Monoid w) => Proxy2 (RWST r w s m) |]
     [e| \m1 m2 -> RWST $ \ r s -> runRWST m1 r s `qRecover` runRWST m2 r s |])
+$(deriveQuoteTrans
+    [t| forall r w s m. (Quote m, Monoid w) => Proxy2 (RWST r w s m) |])
 
 #if MIN_VERSION_base(4,7,0) && defined(LANGUAGE_DeriveDataTypeable) && __GLASGOW_HASKELL__ < 710
 deriving instance Typeable Lift

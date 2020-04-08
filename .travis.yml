@@ -8,7 +8,7 @@
 #
 # For more information, see https://github.com/haskell-CI/haskell-ci
 #
-# version: 0.10
+# version: 0.10.1
 #
 version: ~> 1.0
 language: c
@@ -120,6 +120,10 @@ install:
   - if [ $HCNUMVER -ge 80200 ] ; then echo 'package th-orphans' >> cabal.project ; fi
   - "if [ $HCNUMVER -ge 80200 ] ; then echo '  ghc-options: -Werror=missing-methods' >> cabal.project ; fi"
   - |
+    echo "source-repository-package"                              >> cabal.project
+    echo "  type:     git"                                        >> cabal.project
+    echo "  location: https://github.com/haskell-compat/th-quote" >> cabal.project
+    echo "  tag:      ce2968f3b3c5c665576656b083265a21545786fe"   >> cabal.project
   - "for pkg in $($HCPKG list --simple-output); do echo $pkg | sed 's/-[^-]*$//' | (grep -vE -- '^(th-orphans)$' || true) | sed 's/^/constraints: /' | sed 's/$/ installed/' >> cabal.project.local; done"
   - cat cabal.project || true
   - cat cabal.project.local || true
@@ -146,6 +150,10 @@ script:
   - if [ $HCNUMVER -ge 80200 ] ; then echo 'package th-orphans' >> cabal.project ; fi
   - "if [ $HCNUMVER -ge 80200 ] ; then echo '  ghc-options: -Werror=missing-methods' >> cabal.project ; fi"
   - |
+    echo "source-repository-package"                              >> cabal.project
+    echo "  type:     git"                                        >> cabal.project
+    echo "  location: https://github.com/haskell-compat/th-quote" >> cabal.project
+    echo "  tag:      ce2968f3b3c5c665576656b083265a21545786fe"   >> cabal.project
   - "for pkg in $($HCPKG list --simple-output); do echo $pkg | sed 's/-[^-]*$//' | (grep -vE -- '^(th-orphans)$' || true) | sed 's/^/constraints: /' | sed 's/$/ installed/' >> cabal.project.local; done"
   - cat cabal.project || true
   - cat cabal.project.local || true
@@ -159,5 +167,5 @@ script:
   # haddock...
   - ${CABAL} v2-haddock $WITHCOMPILER --with-haddock $HADDOCK ${TEST} ${BENCH} all
 
-# REGENDATA ("0.10",["--output=.travis.yml","--config=cabal.haskell-ci","cabal.project"])
+# REGENDATA ("0.10.1",["--output=.travis.yml","--config=cabal.haskell-ci","cabal.project"])
 # EOF
